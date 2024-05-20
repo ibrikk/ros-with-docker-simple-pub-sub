@@ -4,7 +4,7 @@ This guide will walk you through setting up ROS Melodic in Docker containers on 
 
 ## Prerequisites
 
-- Two computers connected to the same network.
+- Two computers connected to the same wireless network.
 - Docker installed on both computers.
 
 ## Steps
@@ -36,11 +36,11 @@ sudo docker exec -it ros_container bash
 This command opens a bash shell inside the running Docker container, allowing you to execute commands within the container.
 
 ## Install ROS Dependencies
-### 4. On both terminals, run the following commands:
+### 4. On both terminals, and on both computers, run the following commands:
 
 ```
 sudo apt update
-sudo apt install ros-melodic-catkin python-catkin-tools build-essential nano
+sudo apt install ros-melodic-catkin python-catkin-tools build-essential nano net-tools
 source /opt/ros/melodic/setup.bash
 
 mkdir -p ~/catkin_ws/src
@@ -52,7 +52,7 @@ source devel/setup.bash
 This updates the package lists for Ubuntu and  installs ROS Catkin build tools, Python Catkin tools, and other essential build packages along with the nano text editor. We then source the ROS setup file to set up the environment for ROS Melodic. 
 
 ## Create a New Publisher Package
-### 5. On both terminals, run:
+### 5. On both computers and on both terminals, run:
 
 ```
 cd ~/catkin_ws/src
@@ -103,9 +103,9 @@ if __name__ == '__main__':
 
 This script creates a ROS node named talker that publishes a "hello world" message with the current time to the chatter topic at 1 Hz.
 
-### 8. Find the IP address of your Docker machine. Our port will be 11311:
+### 8. Find the WI-FI IP address of your Docker machine. Our port will be 11311:
 ```
-hostname -I
+ifconfig
 ```
 
 This command displays the IP address of the Docker machine.
@@ -170,13 +170,13 @@ if __name__ == '__main__':
 
 This script creates a ROS node named listener that subscribes to the chatter topic and logs the received messages.
 
-### 3. Find the IP address of your Docker machine. Our port will be 11311:
+### 3. Find the WI-FI IP address of your Docker machine. Our port will be 11311:
 
 ```
-hostname -I
+ifconfig
 ```
 
-### 4. Set the ROS_HOSTNAME, ROS_IP, ROS_MASTER_URI on both terminals:
+### 4. On both terminals: set the ROS_MASTER_URI to the WI-FI IP address of your Computer 1, set the ROS_HOSTNAME and ROS_IP to the WI-FI IP address of your Computer 2.
 
 ```
 export ROS_MASTER_URI=http://<IP_ADDRESS>:11311
@@ -184,10 +184,11 @@ export ROS_IP=<IP_ADDRESS>
 export ROS_HOSTNAME=<IP_ADDRESS>
 ```
 
-Replace <IP_ADDRESS> with your actual IP address. These commands set the ROS environment variables to configure the network settings.
+Replace <IP_ADDRESS> with your actual IP address. Make sure to replace ROS_MASTER_URI Wi-FI IP address with WI-FI IP address of Computer 1. The <IP_ADDRESS> in ROS_IP and ROS_HOSTNAME fields should be set to Computer 2's WI-FI IP address.
+These commands set the ROS environment variables to configure the network settings.
 
 
-### 5. Replace <IP_ADDRESS> with your actual IP address. Source and run the subscriber:
+### 5. Source and run the subscriber:
 
 ```
 source ~/catkin_ws/devel/setup.bash
@@ -195,10 +196,4 @@ rosrun simple_pub_sub simple_subscriber.py
 ```
 
 These commands source the setup file and run the subscriber node.
-
-
-
-
-
-
 
